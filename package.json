@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": ""
+    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/MNPCMW6444/mongoose-auto-versioning#readme",
   "devDependencies": {
-    "esbuild": "^0.19.8"
+    "esbuild": "^0.19.8",
+    "mongoose": "^8.0.3"
+  },
+  "dependencies": {
+    "immutable": "^5.0.0-beta.4"
   }
 }
