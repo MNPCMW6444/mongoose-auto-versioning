@@ -1,0 +1,19 @@
+{
+  "name": "mongoose-auto-versioning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MNPCMW6444/mongoose-auto-versioning.git"
+  },
+  "author": "Michael Nusair",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MNPCMW6444/mongoose-auto-versioning/issues"
+  },
+  "homepage": "https://github.com/MNPCMW6444/mongoose-auto-versioning#readme"
+}
