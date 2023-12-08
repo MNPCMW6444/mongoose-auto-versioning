@@ -1,8 +1,11 @@
 {
-  "name": "mongoose-auto-versioning",
+  "name": "@mnpcmw6444/mongoose-auto-versioning",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs"
   },
@@ -22,5 +25,6 @@
   },
   "dependencies": {
     "immutable": "^5.0.0-beta.4"
-  }
+  },
+  "description": ""
 }
