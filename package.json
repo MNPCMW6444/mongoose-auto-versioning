@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": ""
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MNPCMW6444/mongoose-auto-versioning/issues"
   },
-  "homepage": "https://github.com/MNPCMW6444/mongoose-auto-versioning#readme"
+  "homepage": "https://github.com/MNPCMW6444/mongoose-auto-versioning#readme",
+  "devDependencies": {
+    "esbuild": "^0.19.8"
+  }
 }
