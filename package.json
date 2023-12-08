@@ -1,13 +1,13 @@
 {
   "name": "@mnpcmw6444/mongoose-auto-versioning",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs"
+    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs && tsc"
   },
   "repository": {
     "type": "git",
