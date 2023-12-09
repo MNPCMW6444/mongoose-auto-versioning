@@ -1,5 +1,3 @@
-import {ObjectId} from "mongodb";
-import {fromJS} from "immutable";
 import {Document} from "mongoose";
 
 const VERSION = "_version";
@@ -95,7 +93,7 @@ const queryOne = async (query: any, next: any) => {
     return base;
 }
 
-export default (schema: any, options: any) => {
+export const versioning = (schema: any, options: any) => {
     if (typeof options == 'string') {
         options = {collection: options};
     }
