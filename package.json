@@ -1,14 +1,20 @@
 {
   "name": "@mnpcmw6444/mongoose-auto-versioning",
-  "version": "2.0.0",
-  "main": "dist/index.cjs",
+  "version": "4.0.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=esm --outfile=dist/index.js && tsc"
+    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=esm --outfile=dist/esm/index.js && esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/cjs/index.js && tsc"
   },
   "repository": {
     "type": "git",
