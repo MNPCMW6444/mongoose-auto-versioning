@@ -1,9 +1,11 @@
+// jest.config.js or jest.config.ts
 module.exports = {
-    preset: 'ts-jest',
+    transform: {
+        '^.+\\.(ts|tsx)$': ['ts-jest', {
+            // Your ts-jest specific configuration
+            tsconfig: './tsconfig.json'
+        }],
+    },
+    // other jest configurations like test environment
     testEnvironment: 'node',
-    globals: {
-        'ts-jest': {
-            tsconfig: 'tsconfig.json'
-        }
-    }
 };

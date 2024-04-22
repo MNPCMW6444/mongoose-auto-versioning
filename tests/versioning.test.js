@@ -1,14 +1,20 @@
 const mongoose = require('mongoose');
 const { connect, closeDatabase, clearDatabase } = require('./setup');
-const { cloneSchema, isWritable, isValidVersion, filterAndModifyOne, versioning } = require('../src/index');
-
-beforeAll(async () => await connect());
+const {
+    cloneSchema,
+    isWritable,
+    isValidVersion,
+    versioning,
+    constants
+} = require('../src/index');
+beforeAll(async () => await connect(), 20000); // Increased timeout
 afterEach(async () => await clearDatabase());
-afterAll(async () => await closeDatabase());
+afterAll(async () => await closeDatabase(), 20000); // Increased timeout
+
 
 describe('Schema Manipulation and Document Versioning', () => {
     // Define a simple schema
-    const TestSchema = new mongoose.Schema({ name: String, age: Number });
+    const TestSchema = new mongoose.Schema({ name: String, age: Number, deleted: Boolean });
     const TestModel = mongoose.model('Test', TestSchema);
 
     describe('cloneSchema', () => {

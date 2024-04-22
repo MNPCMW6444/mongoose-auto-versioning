@@ -1,13 +1,13 @@
-// tests/setup.js
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 
-const mongod = new MongoMemoryServer();
+let mongod;
 
 module.exports = {
     connect: async () => {
-        const uri = await mongod.getUri();
-        await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        mongod = await MongoMemoryServer.create();
+        const uri = mongod.getUri();
+        await mongoose.connect(uri);  // Remove deprecated options
     },
     closeDatabase: async () => {
         await mongoose.connection.dropDatabase();

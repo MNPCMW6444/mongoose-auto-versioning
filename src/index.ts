@@ -1,50 +1,47 @@
-import {Document} from "mongoose";
+import { Document, Schema } from "mongoose";
 
-const VERSION = "_version";
-const ID = "_id";
-const VALIDITY = "_validity";
-const EDITOR = "_editor";
-const DELETER = "_deleter";
-const DEFAULT_EDITOR = "default";
-const DEFAULT_DELETER = "default";
-const SESSION = "_session";
+export const VERSION = "_version";
+export const ID = "_id";
+export const VALIDITY = "_validity";
+export const EDITOR = "_editor";
+export const DELETER = "_deleter";
+export const DEFAULT_EDITOR = "default";
+export const DEFAULT_DELETER = "default";
+export const SESSION = "_session";
 
-const RESERVED_FIELDS = [VERSION, VALIDITY, EDITOR, DELETER, SESSION];
+export const RESERVED_FIELDS = [VERSION, VALIDITY, EDITOR, DELETER, SESSION];
 
-const constants = {
+export const constants = {
     VERSION, ID, VALIDITY, EDITOR, DELETER, DEFAULT_EDITOR, DEFAULT_DELETER, SESSION, RESERVED_FIELDS
 };
 
-const cloneSchema = (schema: any, mongoose: any) => {
-    let clonedSchema = new mongoose.Schema({}, {autoIndex: false});
-    schema.eachPath(function (path: any, type: any) {
+
+
+
+export const cloneSchema = (schema: Schema<any>, mongoose: any): Schema<any> => {
+    let clonedSchema = new mongoose.Schema({}, { autoIndex: false });
+    schema.eachPath((path: string, type: any) => {
         if (path === constants.ID) {
-            return;
+            return;  // Ensure this actually prevents adding `_id`
         }
         let clonedPath: any = {};
-        clonedPath[path] = type.options;
-        clonedPath[path].unique = false;
-        if (path !== constants.VERSION) {
-            clonedPath[path].required = false;
-        }
-        clonedSchema.add(clonedPath);
+        clonedPath[path] = { ...type.options, unique: false, required: (path === constants.VERSION) };
+        clonedSchema.add({ [path]: clonedPath[path] });
     });
     return clonedSchema;
 };
 
-const isWritable = (field: any) => {
-    return !constants.RESERVED_FIELDS.find(key => key === field);
-}
+export const isWritable = (field: string): boolean => {
+    return !constants.RESERVED_FIELDS.includes(field);
+};
 
-const isValidVersion = (v: any) => {
-    if (typeof v != "string") return false;
-    if (isNaN(v as any)) return false;
-    if (isNaN(parseInt(v))) return false;
-    if (parseInt(v) < 1) return false;
-    return true;
-}
+export const isValidVersion = (v: string): boolean => {
+    if (typeof v !== "string") return false;
+    const parsed = parseInt(v);
+    return !isNaN(parsed) && parsed > 0;
+};
 
-const filterAndModifyOne = async (query: any, next: any) => {
+export const filterAndModifyOne = async (query: any, next: any) => {
     let base = await queryOne(query, next);
     if (base === null) next();
     else {
@@ -64,7 +61,7 @@ const filterAndModifyOne = async (query: any, next: any) => {
     next();
 }
 
-const filterAndModifyMany = async (query: any, next: any) => {
+export const filterAndModifyMany = async (query: any, next: any) => {
     let bases = await query.model.find(query._conditions);
     const session = query.options.session;
     for (const base of bases) {
@@ -79,7 +76,7 @@ const filterAndModifyMany = async (query: any, next: any) => {
     next();
 }
 
-const getQueryOptions = (query: any) => {
+export const getQueryOptions = (query: any) => {
     let sort = {};
     let skip = 0;
     if (query.op.startsWith("find")) {
@@ -88,7 +85,7 @@ const getQueryOptions = (query: any) => {
     return {sort, skip};
 }
 
-const queryOne = async (query: any, next: any) => {
+export const queryOne = async (query: any, next: any) => {
     let base = await query.model.findOne(query._conditions, null, getQueryOptions(query));
     return base;
 }
@@ -143,11 +140,19 @@ export const versioning = (schema: any, options: any) => {
         next();
     });
 
-    schema.pre('deleteOne', {document: true, query: false}, async function (this: Document, next: any) {
-        (this as any)["deleted" as keyof any] = true;
+    interface MyDocument extends Document {
+        deleted?: boolean;
+        // Do not redefine `save` unless necessary
+    }
+
+
+
+    schema.pre('deleteOne', { document: true, query: false }, async function(this: MyDocument, next: () => void) {
+        this.deleted = true;
         await this.save();
         next();
     });
+
 
 
 };
